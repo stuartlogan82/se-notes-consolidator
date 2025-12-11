@@ -47,6 +47,18 @@ function runAllTests() {
     testFormatSyncDate
   ]));
 
+  // Run DocumentFormatter tests
+  Logger.log('\n--- Testing DocumentFormatter ---');
+  allResults.push(...runTestSuite('DocumentFormatter', [
+    testFormatDocumentHeader,
+    testFormatTranscriptSection,
+    testFormatEmailThreadSection,
+    testFormatSectionHeader,
+    testFormatMetadata,
+    testFormatContentSeparator,
+    testFormatParticipants
+  ]));
+
   // Print summary
   Logger.log('\n======================================');
   printTestSummary(allResults);

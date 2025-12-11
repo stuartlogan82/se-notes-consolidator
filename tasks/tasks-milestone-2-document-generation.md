@@ -61,18 +61,18 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 1.10 Test reading and updating with real spreadsheet - Manual task for later
 
 - [ ] 2.0 Implement document formatting functions (TDD)
-  - [ ] 2.1 Write test for `formatDocumentHeader` function (creates doc title with opportunity name and Salesforce link)
-  - [ ] 2.2 Implement `formatDocumentHeader` function in `DocumentFormatter.js`
-  - [ ] 2.3 Write test for `formatTranscriptSection` function (converts transcript object to formatted text with metadata)
-  - [ ] 2.4 Implement `formatTranscriptSection` function
-  - [ ] 2.5 Write test for `formatEmailThreadSection` function (converts email thread to formatted text)
-  - [ ] 2.6 Implement `formatEmailThreadSection` function
-  - [ ] 2.7 Write test for `formatSectionHeader` function (creates section headers with emojis: 📞, 📧, etc.)
-  - [ ] 2.8 Implement `formatSectionHeader` function
-  - [ ] 2.9 Write test for `formatMetadata` function (formats participant lists, dates, durations)
-  - [ ] 2.10 Implement `formatMetadata` function
-  - [ ] 2.11 Write test for `formatContentSeparator` function (creates '---' separators between items)
-  - [ ] 2.12 Implement `formatContentSeparator` function
+  - [x] 2.1 Write test for `formatDocumentHeader` function (creates doc title with opportunity name and Salesforce link)
+  - [x] 2.2 Implement `formatDocumentHeader` function in `DocumentFormatter.js`
+  - [x] 2.3 Write test for `formatTranscriptSection` function (converts transcript object to formatted text with metadata)
+  - [x] 2.4 Implement `formatTranscriptSection` function
+  - [x] 2.5 Write test for `formatEmailThreadSection` function (converts email thread to formatted text)
+  - [x] 2.6 Implement `formatEmailThreadSection` function
+  - [x] 2.7 Write test for `formatSectionHeader` function (creates section headers with emojis: 📞, 📧, etc.)
+  - [x] 2.8 Implement `formatSectionHeader` function
+  - [x] 2.9 Write test for `formatMetadata` function (formats participant lists, dates, durations)
+  - [x] 2.10 Implement `formatMetadata` function
+  - [x] 2.11 Write test for `formatContentSeparator` function (creates '---' separators between items)
+  - [x] 2.12 Implement `formatContentSeparator` function
   - [ ] 2.13 Run all DocumentFormatter tests and verify they pass (target: 100% success rate)
 
 - [ ] 3.0 Implement Google Docs API integration (TDD)
