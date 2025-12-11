@@ -76,19 +76,19 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.13 Run all DocumentFormatter tests and verify they pass (55/55 total tests, 100% success rate)
 
 - [ ] 3.0 Implement Google Docs API integration (TDD)
-  - [ ] 3.1 Research Google Docs API methods (DocumentApp, appendParagraph, getBody, findText, setLinkUrl)
-  - [ ] 3.2 Write test for `getOrCreateDocument` function (creates doc if doesn't exist, opens if it does)
-  - [ ] 3.3 Implement `getOrCreateDocument` function in `DocsAPI.js`
-  - [ ] 3.4 Write test for `setDocumentHeader` function (sets/updates doc title and Salesforce link at top)
-  - [ ] 3.5 Implement `setDocumentHeader` function
-  - [ ] 3.6 Write test for `findSectionIndex` function (locates section by header text)
-  - [ ] 3.7 Implement `findSectionIndex` function
-  - [ ] 3.8 Write test for `appendToSection` function (adds content under specific section)
-  - [ ] 3.9 Implement `appendToSection` function
-  - [ ] 3.10 Write test for `createDocumentStructure` function (sets up initial sections: Call Transcripts, Email Correspondence, etc.)
-  - [ ] 3.11 Implement `createDocumentStructure` function
-  - [ ] 3.12 Write test for `appendParagraphWithFormatting` helper (handles bold, spacing, hyperlinks)
-  - [ ] 3.13 Implement `appendParagraphWithFormatting` helper
+  - [x] 3.1 Research Google Docs API methods (DocumentApp, appendParagraph, getBody, findText, setLinkUrl)
+  - [x] 3.2 Write test for `getOrCreateDocument` function (creates doc if doesn't exist, opens if it does)
+  - [x] 3.3 Implement `getOrCreateDocument` function in `DocsAPI.js`
+  - [x] 3.4 Write test for `setDocumentHeader` function (sets/updates doc title and Salesforce link at top)
+  - [x] 3.5 Implement `setDocumentHeader` function
+  - [x] 3.6 Write test for `findSectionIndex` function (locates section by header text)
+  - [x] 3.7 Implement `findSectionIndex` function
+  - [x] 3.8 Write test for `appendToSection` function (adds content under specific section)
+  - [x] 3.9 Implement `appendToSection` function
+  - [x] 3.10 Write test for `createDocumentStructure` function (sets up initial sections: Call Transcripts, Email Correspondence, etc.)
+  - [x] 3.11 Implement `createDocumentStructure` function
+  - [x] 3.12 Write test for `appendParagraphWithFormatting` helper (handles bold, spacing, hyperlinks)
+  - [x] 3.13 Implement `appendParagraphWithFormatting` helper
   - [ ] 3.14 Run all DocsAPI tests and verify they pass
 
 - [ ] 4.0 Create main orchestration function

@@ -59,6 +59,17 @@ function runAllTests() {
     testFormatParticipants
   ]));
 
+  // Run DocsAPI tests
+  Logger.log('\n--- Testing DocsAPI ---');
+  allResults.push(...runTestSuite('DocsAPI', [
+    testGetOrCreateDocument,
+    testFindSectionIndex,
+    testAppendToSection,
+    testCreateDocumentStructure,
+    testAppendParagraphWithFormatting,
+    testSetDocumentHeader
+  ]));
+
   // Print summary
   Logger.log('\n======================================');
   printTestSummary(allResults);
