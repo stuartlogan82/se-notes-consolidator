@@ -60,7 +60,7 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 1.9 Run all SheetConfig tests and verify they pass (35/35 tests passing, 100% success rate)
   - [ ] 1.10 Test reading and updating with real spreadsheet - Manual task for later
 
-- [ ] 2.0 Implement document formatting functions (TDD)
+- [x] 2.0 Implement document formatting functions (TDD)
   - [x] 2.1 Write test for `formatDocumentHeader` function (creates doc title with opportunity name and Salesforce link)
   - [x] 2.2 Implement `formatDocumentHeader` function in `DocumentFormatter.js`
   - [x] 2.3 Write test for `formatTranscriptSection` function (converts transcript object to formatted text with metadata)
@@ -73,7 +73,7 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.10 Implement `formatMetadata` function
   - [x] 2.11 Write test for `formatContentSeparator` function (creates '---' separators between items)
   - [x] 2.12 Implement `formatContentSeparator` function
-  - [ ] 2.13 Run all DocumentFormatter tests and verify they pass (target: 100% success rate)
+  - [x] 2.13 Run all DocumentFormatter tests and verify they pass (55/55 total tests, 100% success rate)
 
 - [ ] 3.0 Implement Google Docs API integration (TDD)
   - [ ] 3.1 Research Google Docs API methods (DocumentApp, appendParagraph, getBody, findText, setLinkUrl)
