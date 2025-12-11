@@ -49,16 +49,16 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 0.1 Create and checkout a new branch (e.g., `git checkout -b feature/milestone-2-document-generation`)
 
 - [ ] 1.0 Set up Google Sheet configuration template and management
-  - [ ] 1.1 Create template spreadsheet structure in Google Sheets (columns: Opportunity Name, Salesforce URL, Customer Domain, Gmail Labels, Doc ID, Last Sync Date, Status, Error Log)
-  - [ ] 1.2 Write test for `getOpportunityConfigs` function (parses sheet rows into config objects)
-  - [ ] 1.3 Implement `getOpportunityConfigs` function in `SheetConfig.js`
-  - [ ] 1.4 Write test for `updateLastSyncDate` function (updates timestamp for specific opportunity)
-  - [ ] 1.5 Implement `updateLastSyncDate` function
-  - [ ] 1.6 Write test for `getSheetByName` helper (finds or creates sheet)
-  - [ ] 1.7 Implement `getSheetByName` helper
-  - [ ] 1.8 Create sample test data in spreadsheet (2-3 test opportunities)
-  - [ ] 1.9 Run all SheetConfig tests and verify they pass
-  - [ ] 1.10 Test reading and updating with real spreadsheet
+  - [x] 1.1 Create template spreadsheet structure in Google Sheets (columns: Opportunity Name, Salesforce URL, Customer Domain, Gmail Labels, Doc ID, Last Sync Date, Status, Error Log) - CSV template created
+  - [x] 1.2 Write test for `getOpportunityConfigs` function (parses sheet rows into config objects)
+  - [x] 1.3 Implement `getOpportunityConfigs` function in `SheetConfig.js`
+  - [x] 1.4 Write test for `updateLastSyncDate` function (updates timestamp for specific opportunity)
+  - [x] 1.5 Implement `updateLastSyncDate` function
+  - [x] 1.6 Write test for `getSheetByName` helper (finds or creates sheet)
+  - [x] 1.7 Implement `getSheetByName` helper
+  - [ ] 1.8 Create sample test data in spreadsheet (2-3 test opportunities) - Manual task for later
+  - [x] 1.9 Run all SheetConfig tests and verify they pass (35/35 tests passing, 100% success rate)
+  - [ ] 1.10 Test reading and updating with real spreadsheet - Manual task for later
 
 - [ ] 2.0 Implement document formatting functions (TDD)
   - [ ] 2.1 Write test for `formatDocumentHeader` function (creates doc title with opportunity name and Salesforce link)

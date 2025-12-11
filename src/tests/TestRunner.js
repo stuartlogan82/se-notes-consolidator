@@ -37,8 +37,15 @@ function runAllTests() {
     testFormatGmailDate
   ]));
 
-  // Future test suites will be added here as we build them:
-  // allResults.push(...runTestSuite('ConfigManager', [testConfigManager]));
+  // Run SheetConfig tests
+  Logger.log('\n--- Testing SheetConfig ---');
+  allResults.push(...runTestSuite('SheetConfig', [
+    testGetOpportunityConfigs,
+    testUpdateLastSyncDate,
+    testUpdateOpportunityStatus,
+    testGetSheetByName,
+    testFormatSyncDate
+  ]));
 
   // Print summary
   Logger.log('\n======================================');
