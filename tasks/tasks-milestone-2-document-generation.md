@@ -45,11 +45,11 @@ Update the file after completing each sub-task, not just after completing an ent
 
 ## Tasks
 
-- [ ] 0.0 Create feature branch
-  - [ ] 0.1 Create and checkout a new branch (e.g., `git checkout -b feature/milestone-2-document-generation`)
+- [x] 0.0 Create feature branch
+  - [x] 0.1 Create and checkout a new branch (e.g., `git checkout -b feature/milestone-2-document-generation`)
 
 - [ ] 1.0 Set up Google Sheet configuration template and management
-  - [ ] 1.1 Create template spreadsheet structure in Google Sheets (columns: Opportunity Name, Customer Domain, Gmail Labels, Doc ID, Last Sync Date, Status, Error Log)
+  - [ ] 1.1 Create template spreadsheet structure in Google Sheets (columns: Opportunity Name, Salesforce URL, Customer Domain, Gmail Labels, Doc ID, Last Sync Date, Status, Error Log)
   - [ ] 1.2 Write test for `getOpportunityConfigs` function (parses sheet rows into config objects)
   - [ ] 1.3 Implement `getOpportunityConfigs` function in `SheetConfig.js`
   - [ ] 1.4 Write test for `updateLastSyncDate` function (updates timestamp for specific opportunity)
@@ -61,31 +61,35 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 1.10 Test reading and updating with real spreadsheet
 
 - [ ] 2.0 Implement document formatting functions (TDD)
-  - [ ] 2.1 Write test for `formatTranscriptSection` function (converts transcript object to formatted text with metadata)
-  - [ ] 2.2 Implement `formatTranscriptSection` function in `DocumentFormatter.js`
-  - [ ] 2.3 Write test for `formatEmailThreadSection` function (converts email thread to formatted text)
-  - [ ] 2.4 Implement `formatEmailThreadSection` function
-  - [ ] 2.5 Write test for `formatSectionHeader` function (creates section headers with emojis: 📞, 📧, etc.)
-  - [ ] 2.6 Implement `formatSectionHeader` function
-  - [ ] 2.7 Write test for `formatMetadata` function (formats participant lists, dates, durations)
-  - [ ] 2.8 Implement `formatMetadata` function
-  - [ ] 2.9 Write test for `formatContentSeparator` function (creates '---' separators between items)
-  - [ ] 2.10 Implement `formatContentSeparator` function
-  - [ ] 2.11 Run all DocumentFormatter tests and verify they pass (target: 100% success rate)
+  - [ ] 2.1 Write test for `formatDocumentHeader` function (creates doc title with opportunity name and Salesforce link)
+  - [ ] 2.2 Implement `formatDocumentHeader` function in `DocumentFormatter.js`
+  - [ ] 2.3 Write test for `formatTranscriptSection` function (converts transcript object to formatted text with metadata)
+  - [ ] 2.4 Implement `formatTranscriptSection` function
+  - [ ] 2.5 Write test for `formatEmailThreadSection` function (converts email thread to formatted text)
+  - [ ] 2.6 Implement `formatEmailThreadSection` function
+  - [ ] 2.7 Write test for `formatSectionHeader` function (creates section headers with emojis: 📞, 📧, etc.)
+  - [ ] 2.8 Implement `formatSectionHeader` function
+  - [ ] 2.9 Write test for `formatMetadata` function (formats participant lists, dates, durations)
+  - [ ] 2.10 Implement `formatMetadata` function
+  - [ ] 2.11 Write test for `formatContentSeparator` function (creates '---' separators between items)
+  - [ ] 2.12 Implement `formatContentSeparator` function
+  - [ ] 2.13 Run all DocumentFormatter tests and verify they pass (target: 100% success rate)
 
 - [ ] 3.0 Implement Google Docs API integration (TDD)
-  - [ ] 3.1 Research Google Docs API methods (DocumentApp, appendParagraph, getBody, findText)
+  - [ ] 3.1 Research Google Docs API methods (DocumentApp, appendParagraph, getBody, findText, setLinkUrl)
   - [ ] 3.2 Write test for `getOrCreateDocument` function (creates doc if doesn't exist, opens if it does)
   - [ ] 3.3 Implement `getOrCreateDocument` function in `DocsAPI.js`
-  - [ ] 3.4 Write test for `findSectionIndex` function (locates section by header text)
-  - [ ] 3.5 Implement `findSectionIndex` function
-  - [ ] 3.6 Write test for `appendToSection` function (adds content under specific section)
-  - [ ] 3.7 Implement `appendToSection` function
-  - [ ] 3.8 Write test for `createDocumentStructure` function (sets up initial sections: Call Transcripts, Email Correspondence, etc.)
-  - [ ] 3.9 Implement `createDocumentStructure` function
-  - [ ] 3.10 Write test for `appendParagraphWithFormatting` helper (handles bold, spacing)
-  - [ ] 3.11 Implement `appendParagraphWithFormatting` helper
-  - [ ] 3.12 Run all DocsAPI tests and verify they pass
+  - [ ] 3.4 Write test for `setDocumentHeader` function (sets/updates doc title and Salesforce link at top)
+  - [ ] 3.5 Implement `setDocumentHeader` function
+  - [ ] 3.6 Write test for `findSectionIndex` function (locates section by header text)
+  - [ ] 3.7 Implement `findSectionIndex` function
+  - [ ] 3.8 Write test for `appendToSection` function (adds content under specific section)
+  - [ ] 3.9 Implement `appendToSection` function
+  - [ ] 3.10 Write test for `createDocumentStructure` function (sets up initial sections: Call Transcripts, Email Correspondence, etc.)
+  - [ ] 3.11 Implement `createDocumentStructure` function
+  - [ ] 3.12 Write test for `appendParagraphWithFormatting` helper (handles bold, spacing, hyperlinks)
+  - [ ] 3.13 Implement `appendParagraphWithFormatting` helper
+  - [ ] 3.14 Run all DocsAPI tests and verify they pass
 
 - [ ] 4.0 Create main orchestration function
   - [ ] 4.1 Write test for `processOpportunities` function (mock all dependencies: SheetConfig, APIs, DocsAPI)
