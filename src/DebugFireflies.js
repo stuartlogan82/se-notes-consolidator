@@ -196,3 +196,53 @@ function introspectFirefliesSchema() {
     Logger.log('✗ Error: ' + e.message);
   }
 }
+
+/**
+ * Inspect the Channel type to see what fields are available
+ */
+function inspectChannelType() {
+  Logger.log('=== Inspecting Channel Type ===\n');
+
+  const apiKey = PropertiesService.getScriptProperties().getProperty('FIREFLIES_API_KEY');
+
+  // Introspection query for Channel type
+  const introspectionQuery = `
+    query {
+      __type(name: "Channel") {
+        name
+        fields {
+          name
+          type {
+            name
+            kind
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = UrlFetchApp.fetch('https://api.fireflies.ai/graphql', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+      payload: JSON.stringify({ query: introspectionQuery }),
+      muteHttpExceptions: true
+    });
+
+    const json = JSON.parse(response.getContentText());
+
+    if (json.data && json.data.__type) {
+      Logger.log(`Type: ${json.data.__type.name}`);
+      Logger.log('Available fields:');
+      json.data.__type.fields.forEach(field => {
+        Logger.log(`  - ${field.name}: ${field.type.name || field.type.kind}`);
+      });
+    } else {
+      Logger.log('Could not find Channel type');
+      Logger.log(response.getContentText());
+    }
+  } catch (e) {
+    Logger.log('✗ Error: ' + e.message);
+  }
+}

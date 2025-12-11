@@ -37,8 +37,49 @@ function runAllTests() {
     testFormatGmailDate
   ]));
 
-  // Future test suites will be added here as we build them:
-  // allResults.push(...runTestSuite('ConfigManager', [testConfigManager]));
+  // Run SheetConfig tests
+  Logger.log('\n--- Testing SheetConfig ---');
+  allResults.push(...runTestSuite('SheetConfig', [
+    testGetOpportunityConfigs,
+    testUpdateLastSyncDate,
+    testUpdateOpportunityStatus,
+    testGetSheetByName,
+    testFormatSyncDate,
+    testLogError,
+    testClearErrorLog
+  ]));
+
+  // Run DocumentFormatter tests
+  Logger.log('\n--- Testing DocumentFormatter ---');
+  allResults.push(...runTestSuite('DocumentFormatter', [
+    testFormatDocumentHeader,
+    testFormatTranscriptSection,
+    testFormatEmailThreadSection,
+    testFormatSectionHeader,
+    testFormatMetadata,
+    testFormatContentSeparator,
+    testFormatParticipants
+  ]));
+
+  // Run DocsAPI tests
+  Logger.log('\n--- Testing DocsAPI ---');
+  allResults.push(...runTestSuite('DocsAPI', [
+    testGetOrCreateDocument,
+    testFindSectionIndex,
+    testAppendToSection,
+    testCreateDocumentStructure,
+    testAppendParagraphWithFormatting,
+    testSetDocumentHeader
+  ]));
+
+  // Run Orchestrator tests
+  Logger.log('\n--- Testing Orchestrator ---');
+  allResults.push(...runTestSuite('Orchestrator', [
+    testProcessOpportunities,
+    testProcessOpportunitiesErrorIsolation,
+    testProcessOpportunitiesEmptyResults,
+    testProcessOpportunitiesNewDocument
+  ]));
 
   // Print summary
   Logger.log('\n======================================');
