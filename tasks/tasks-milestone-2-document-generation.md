@@ -91,19 +91,19 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 3.13 Implement `appendParagraphWithFormatting` helper
   - [x] 3.14 Run all DocsAPI tests and verify they pass (70/70 total tests, 100% success rate)
 
-- [ ] 4.0 Create main orchestration function
-  - [ ] 4.1 Write test for `processOpportunities` function (mock all dependencies: SheetConfig, APIs, DocsAPI)
-  - [ ] 4.2 Implement `processOpportunities` skeleton in `Orchestrator.js`
-  - [ ] 4.3 Add logic to read opportunity configs from sheet
-  - [ ] 4.4 Add logic to iterate through each opportunity with error isolation
-  - [ ] 4.5 Add logic to fetch new transcripts since last sync date (using fetchFirefliesTranscripts with sinceDate)
-  - [ ] 4.6 Add logic to fetch new emails since last sync date (using fetchGmailThreads with afterDate)
-  - [ ] 4.7 Add logic to format transcripts and emails using DocumentFormatter
-  - [ ] 4.8 Add logic to append formatted content to Google Doc
-  - [ ] 4.9 Add logic to update last sync date after successful processing
-  - [ ] 4.10 Add comprehensive error handling (try-catch per opportunity, continue on failure)
-  - [ ] 4.11 Test orchestration function with mocked data
-  - [ ] 4.12 Add deduplication check (don't append content already in doc)
+- [x] 4.0 Create main orchestration function
+  - [x] 4.1 Write test for `processOpportunities` function (mock all dependencies: SheetConfig, APIs, DocsAPI)
+  - [x] 4.2 Implement `processOpportunities` skeleton in `Orchestrator.js`
+  - [x] 4.3 Add logic to read opportunity configs from sheet
+  - [x] 4.4 Add logic to iterate through each opportunity with error isolation
+  - [x] 4.5 Add logic to fetch new transcripts since last sync date (using fetchFirefliesTranscripts with sinceDate)
+  - [x] 4.6 Add logic to fetch new emails since last sync date (using fetchGmailThreads with afterDate)
+  - [x] 4.7 Add logic to format transcripts and emails using DocumentFormatter
+  - [x] 4.8 Add logic to append formatted content to Google Doc
+  - [x] 4.9 Add logic to update last sync date after successful processing
+  - [x] 4.10 Add comprehensive error handling (try-catch per opportunity, continue on failure)
+  - [x] 4.11 Test orchestration function with mocked data
+  - [x] 4.12 Add deduplication check (don't append content already in doc)
 
 - [ ] 5.0 Add custom menu and manual trigger
   - [ ] 5.1 Write `onOpen` function in `MenuSetup.js` to create custom menu

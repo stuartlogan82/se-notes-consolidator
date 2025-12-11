@@ -70,6 +70,15 @@ function runAllTests() {
     testSetDocumentHeader
   ]));
 
+  // Run Orchestrator tests
+  Logger.log('\n--- Testing Orchestrator ---');
+  allResults.push(...runTestSuite('Orchestrator', [
+    testProcessOpportunities,
+    testProcessOpportunitiesErrorIsolation,
+    testProcessOpportunitiesEmptyResults,
+    testProcessOpportunitiesNewDocument
+  ]));
+
   // Print summary
   Logger.log('\n======================================');
   printTestSummary(allResults);
