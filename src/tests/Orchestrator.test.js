@@ -37,13 +37,17 @@ function testProcessOpportunities() {
           return {
             getName: function() { return name; },
             getLastRow: function() { return 3; },
-            getRange: function() {
+            getRange: function(row, col, numRows, numCols) {
               return {
                 getValues: function() {
                   return [
                     ['Acme Corp', 'https://salesforce.com/123', 'acme.com', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', ''],
                     ['TechCo', 'https://salesforce.com/456', 'techco.io', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
                   ];
+                },
+                setValue: function(value) {
+                  // Mock implementation - just track the call
+                  this.value = value;
                 }
               };
             }
@@ -197,13 +201,16 @@ function testProcessOpportunitiesErrorIsolation() {
           return {
             getName: function() { return name; },
             getLastRow: function() { return 3; },
-            getRange: function() {
+            getRange: function(row, col, numRows, numCols) {
               return {
                 getValues: function() {
                   return [
                     ['Bad Opp', 'https://salesforce.com/bad', 'bad.com', 'sales', 'invalid-doc', '2025-01-10 08:00:00', 'Success', ''],
                     ['Good Opp', 'https://salesforce.com/good', 'good.com', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
                   ];
+                },
+                setValue: function(value) {
+                  this.value = value;
                 }
               };
             }
@@ -306,12 +313,15 @@ function testProcessOpportunitiesEmptyResults() {
           return {
             getName: function() { return name; },
             getLastRow: function() { return 2; },
-            getRange: function() {
+            getRange: function(row, col, numRows, numCols) {
               return {
                 getValues: function() {
                   return [
                     ['Acme Corp', 'https://salesforce.com/123', 'acme.com', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', '']
                   ];
+                },
+                setValue: function(value) {
+                  this.value = value;
                 }
               };
             }
@@ -402,12 +412,15 @@ function testProcessOpportunitiesNewDocument() {
           return {
             getName: function() { return name; },
             getLastRow: function() { return 2; },
-            getRange: function() {
+            getRange: function(row, col, numRows, numCols) {
               return {
                 getValues: function() {
                   return [
                     ['New Opp', 'https://salesforce.com/new', 'new.com', 'sales', '', '2025-01-10 08:00:00', 'Success', '']  // Empty doc ID
                   ];
+                },
+                setValue: function(value) {
+                  this.value = value;
                 }
               };
             }

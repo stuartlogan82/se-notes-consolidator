@@ -74,6 +74,9 @@ function processOpportunitiesHelper(spreadsheetApp, firefliesAPI, gmailAPI, docs
         processOpportunity(config, sheet, firefliesAPI, gmailAPI, docsAPI, sheetConfig);
         result.successful++;
         Logger.log('✓ Successfully processed: ' + config.opportunityName);
+
+        // Clear any previous error log on successful processing
+        clearErrorLog(sheet, config);
       } catch (error) {
         result.failed++;
         result.errors.push({
@@ -83,12 +86,22 @@ function processOpportunitiesHelper(spreadsheetApp, firefliesAPI, gmailAPI, docs
 
         Logger.log('✗ Error processing ' + config.opportunityName + ': ' + error.message);
 
+        // Log error to spreadsheet
+        logError(sheet, config, error.message);
+
         // Update opportunity status to Error
         sheetConfig.updateOpportunityStatus(sheet, config, 'Error');
       }
     });
 
     Logger.log('Processing complete: ' + result.successful + ' successful, ' + result.failed + ' failed');
+
+    // Save run summary for "View Last Run Summary" menu item
+    try {
+      saveRunSummary(result);
+    } catch (e) {
+      Logger.log('Could not save run summary: ' + e.message);
+    }
 
   } catch (error) {
     Logger.log('Fatal error in processOpportunities: ' + error.message);

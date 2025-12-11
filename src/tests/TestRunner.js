@@ -44,7 +44,9 @@ function runAllTests() {
     testUpdateLastSyncDate,
     testUpdateOpportunityStatus,
     testGetSheetByName,
-    testFormatSyncDate
+    testFormatSyncDate,
+    testLogError,
+    testClearErrorLog
   ]));
 
   // Run DocumentFormatter tests

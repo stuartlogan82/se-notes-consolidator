@@ -74,6 +74,31 @@ function updateOpportunityStatus(sheet, config, status) {
 }
 
 /**
+ * Log an error for an opportunity
+ * @param {Sheet} sheet - Google Sheets Sheet object
+ * @param {Object} config - Opportunity config with rowNumber
+ * @param {string} errorMessage - Error message to log
+ */
+function logError(sheet, config, errorMessage) {
+  const ERROR_LOG_COL = 8; // Column H (1-indexed)
+  const timestamp = formatSyncDate(new Date());
+  const logEntry = '[' + timestamp + '] ' + errorMessage;
+
+  sheet.getRange(config.rowNumber, ERROR_LOG_COL).setValue(logEntry);
+}
+
+/**
+ * Clear error log for an opportunity
+ * @param {Sheet} sheet - Google Sheets Sheet object
+ * @param {Object} config - Opportunity config with rowNumber
+ */
+function clearErrorLog(sheet, config) {
+  const ERROR_LOG_COL = 8; // Column H (1-indexed)
+
+  sheet.getRange(config.rowNumber, ERROR_LOG_COL).setValue('');
+}
+
+/**
  * Get a sheet by name, creating it if it doesn't exist
  * @param {Spreadsheet} spreadsheet - Google Spreadsheet object
  * @param {string} name - Sheet name

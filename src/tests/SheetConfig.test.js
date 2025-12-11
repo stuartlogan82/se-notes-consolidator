@@ -302,3 +302,113 @@ function testFormatSyncDate() {
 
   return tests;
 }
+
+function testLogError() {
+  const tests = [];
+
+  // Mock sheet
+  const mockSheet = {
+    getRange: function(row, col) {
+      return {
+        setValue: function(value) {
+          this.value = value;
+          mockSheet.lastSetValue = value;
+          mockSheet.lastSetRow = row;
+          mockSheet.lastSetCol = col;
+        }
+      };
+    },
+    lastSetValue: null,
+    lastSetRow: null,
+    lastSetCol: null
+  };
+
+  // Test 1: Log error with timestamp
+  try {
+    const config = { rowNumber: 2, opportunityName: 'Test Opp' };
+    logError(mockSheet, config, 'API connection failed');
+
+    // Should write to error log column (8)
+    assertEqual(mockSheet.lastSetCol, 8);
+    assertEqual(mockSheet.lastSetRow, 2);
+
+    // Should include error message
+    assertContains(mockSheet.lastSetValue, 'API connection failed');
+
+    // Should include timestamp in brackets
+    assertContains(mockSheet.lastSetValue, '[');
+    assertContains(mockSheet.lastSetValue, ']');
+
+    tests.push({ name: 'logError writes error with timestamp', passed: true });
+  } catch (e) {
+    tests.push({ name: 'logError writes error with timestamp', passed: false, error: e.message });
+  }
+
+  // Test 2: Log error to correct row
+  try {
+    const config = { rowNumber: 5, opportunityName: 'Another Opp' };
+    logError(mockSheet, config, 'Document not found');
+
+    assertEqual(mockSheet.lastSetRow, 5);
+    assertContains(mockSheet.lastSetValue, 'Document not found');
+
+    tests.push({ name: 'logError writes to correct row', passed: true });
+  } catch (e) {
+    tests.push({ name: 'logError writes to correct row', passed: false, error: e.message });
+  }
+
+  return tests;
+}
+
+function testClearErrorLog() {
+  const tests = [];
+
+  // Mock sheet
+  const mockSheet = {
+    getRange: function(row, col) {
+      return {
+        setValue: function(value) {
+          this.value = value;
+          mockSheet.lastSetValue = value;
+          mockSheet.lastSetRow = row;
+          mockSheet.lastSetCol = col;
+        }
+      };
+    },
+    lastSetValue: null,
+    lastSetRow: null,
+    lastSetCol: null
+  };
+
+  // Test 1: Clear error log sets empty string
+  try {
+    const config = { rowNumber: 3, opportunityName: 'Test Opp' };
+    clearErrorLog(mockSheet, config);
+
+    // Should write to error log column (8)
+    assertEqual(mockSheet.lastSetCol, 8);
+    assertEqual(mockSheet.lastSetRow, 3);
+
+    // Should set empty string
+    assertEqual(mockSheet.lastSetValue, '');
+
+    tests.push({ name: 'clearErrorLog clears error log', passed: true });
+  } catch (e) {
+    tests.push({ name: 'clearErrorLog clears error log', passed: false, error: e.message });
+  }
+
+  // Test 2: Clear error log for different rows
+  try {
+    const config = { rowNumber: 7, opportunityName: 'Another Opp' };
+    clearErrorLog(mockSheet, config);
+
+    assertEqual(mockSheet.lastSetRow, 7);
+    assertEqual(mockSheet.lastSetValue, '');
+
+    tests.push({ name: 'clearErrorLog works for any row', passed: true });
+  } catch (e) {
+    tests.push({ name: 'clearErrorLog works for any row', passed: false, error: e.message });
+  }
+
+  return tests;
+}

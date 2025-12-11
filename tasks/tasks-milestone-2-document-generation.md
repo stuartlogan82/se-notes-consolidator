@@ -105,25 +105,25 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 4.11 Test orchestration function with mocked data
   - [x] 4.12 Add deduplication check (don't append content already in doc)
 
-- [ ] 5.0 Add custom menu and manual trigger
-  - [ ] 5.1 Write `onOpen` function in `MenuSetup.js` to create custom menu
-  - [ ] 5.2 Create menu items: "Run Consolidation", "View Setup Guide"
-  - [ ] 5.3 Link "Run Consolidation" to `processOpportunities` function
-  - [ ] 5.4 Link "View Setup Guide" to show instructions dialog
-  - [ ] 5.5 Push code and verify menu appears in Google Sheets UI
-  - [ ] 5.6 Test manual trigger executes processOpportunities successfully
-  - [ ] 5.7 Add progress notification (toast message: "Processing X opportunities...")
+- [x] 5.0 Add custom menu and manual trigger
+  - [x] 5.1 Write `onOpen` function in `MenuSetup.js` to create custom menu
+  - [x] 5.2 Create menu items: "Run Consolidation", "View Setup Guide"
+  - [x] 5.3 Link "Run Consolidation" to `processOpportunities` function
+  - [x] 5.4 Link "View Setup Guide" to show instructions dialog
+  - [x] 5.5 Push code and verify menu appears in Google Sheets UI
+  - [x] 5.6 Test manual trigger executes processOpportunities successfully
+  - [x] 5.7 Add progress notification (toast message: "Processing X opportunities...")
 
-- [ ] 6.0 Implement error logging and state tracking
-  - [ ] 6.1 Write test for `logError` function (writes error message and timestamp to sheet error column)
-  - [ ] 6.2 Implement `logError` function in `ErrorLogger.js`
-  - [ ] 6.3 Write test for `updateOpportunityStatus` function (tracks processing state: "Processing", "Success", "Error")
-  - [ ] 6.4 Implement `updateOpportunityStatus` function
-  - [ ] 6.5 Write test for `clearErrorLog` function (clears error for successful re-runs)
-  - [ ] 6.6 Implement `clearErrorLog` function
-  - [ ] 6.7 Integrate error logging into orchestration function (catch blocks)
-  - [ ] 6.8 Run error logging tests and verify they pass
-  - [ ] 6.9 Test error logging with simulated API failures
+- [x] 6.0 Implement error logging and state tracking
+  - [x] 6.1 Write test for `logError` function (writes error message and timestamp to sheet error column)
+  - [x] 6.2 Implement `logError` function in `SheetConfig.js`
+  - [x] 6.3 Write test for `updateOpportunityStatus` function (tracks processing state: "Processing", "Success", "Error")
+  - [x] 6.4 Implement `updateOpportunityStatus` function
+  - [x] 6.5 Write test for `clearErrorLog` function (clears error for successful re-runs)
+  - [x] 6.6 Implement `clearErrorLog` function
+  - [x] 6.7 Integrate error logging into orchestration function (catch blocks)
+  - [x] 6.8 Run error logging tests and verify they pass (78/78 tests passing, 100% success rate)
+  - [x] 6.9 Test error logging with simulated API failures
 
 - [ ] 7.0 End-to-end testing with real opportunities
   - [ ] 7.1 Create test Google Sheet named "Customer Consolidation - Test Config"
