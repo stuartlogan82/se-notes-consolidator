@@ -5,6 +5,7 @@
 # Node modules (if using clasp)
 node_modules/
 package-lock.json
+package.json
 
 # Environment variables and secrets
 .env
