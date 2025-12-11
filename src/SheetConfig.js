@@ -24,7 +24,7 @@ function parseOpportunityConfigs(sheet) {
     return {
       opportunityName: row[0] || '',
       salesforceUrl: row[1] || '',
-      customerDomain: row[2] || '',
+      firefliesChannelId: row[2] || '',
       gmailLabels: row[3] || '',
       docId: row[4] || '',
       lastSyncDate: row[5] || '',
@@ -46,6 +46,18 @@ function getOpportunityConfigs(sheetName) {
   const sheet = getSheetByNameHelper(spreadsheet, sheetName);
 
   return parseOpportunityConfigs(sheet);
+}
+
+/**
+ * Update the Doc ID for an opportunity (when a new doc is created)
+ * @param {Sheet} sheet - Google Sheets Sheet object
+ * @param {Object} config - Opportunity config with rowNumber
+ * @param {string} docId - Document ID to save
+ */
+function updateDocId(sheet, config, docId) {
+  const DOC_ID_COL = 5; // Column E (1-indexed)
+
+  sheet.getRange(config.rowNumber, DOC_ID_COL).setValue(docId);
 }
 
 /**
@@ -115,7 +127,7 @@ function getSheetByNameHelper(spreadsheet, name) {
     const headers = [
       'Opportunity Name',
       'Salesforce URL',
-      'Customer Domain',
+      'Fireflies Channel ID',
       'Gmail Labels',
       'Doc ID',
       'Last Sync Date',

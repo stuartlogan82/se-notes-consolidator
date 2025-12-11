@@ -1,4 +1,4 @@
-Opportunity Name,Salesforce URL,Customer Domain,Gmail Labels,Doc ID,Last Sync Date,Status,Error Log
-Acme Corp Q4 Deal,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890ABC/view,acme.com,customer-support,1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx,2025-01-10 08:00:00,Success,
-TechCo Integration Trial,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890DEF/view,techco.io,"trial,integration",2YkLd9wA0BcDeFgHiJkLmNoPqRsTuVwXy,2025-01-09 08:00:00,Success,
-Global Systems POC,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890GHI/view,globalsystems.com,poc,3ZlMe0xB1CdEfGhIjKlMnOpQrStUvWxYz,2025-01-08 08:00:00,Success,
+Opportunity Name,Salesforce URL,Fireflies Channel ID,Gmail Labels,Doc ID,Last Sync Date,Status,Error Log
+Acme Corp Q4 Deal,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890ABC/view,channel-acme-123,customer-support,1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx,2025-01-10 08:00:00,Success,
+TechCo Integration Trial,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890DEF/view,channel-techco-456,"trial,integration",2YkLd9wA0BcDeFgHiJkLmNoPqRsTuVwXy,2025-01-09 08:00:00,Success,
+Global Systems POC,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890GHI/view,channel-global-789,poc,3ZlMe0xB1CdEfGhIjKlMnOpQrStUvWxYz,2025-01-08 08:00:00,Success,

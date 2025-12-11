@@ -25,7 +25,8 @@ function processOpportunities() {
     },
     {
       updateLastSyncDate: updateLastSyncDate,
-      updateOpportunityStatus: updateOpportunityStatus
+      updateOpportunityStatus: updateOpportunityStatus,
+      updateDocId: updateDocId
     }
   );
 }
@@ -128,12 +129,21 @@ function processOpportunity(config, sheet, firefliesAPI, gmailAPI, docsAPI, shee
 
   // Get or create document
   const doc = docsAPI.getOrCreateDocument(config.docId, config.opportunityName + ' - Customer Consolidation');
+  const newDocId = doc.getId();
 
-  // Check if document is new (empty) - create structure if needed
+  // If doc was just created (no docId in config), save the new doc ID
+  if (!config.docId || config.docId.trim() === '') {
+    Logger.log('New doc created with ID: ' + newDocId + ', updating spreadsheet...');
+    sheetConfig.updateDocId(sheet, config, newDocId);
+    // Update the config object so subsequent operations have the ID
+    config.docId = newDocId;
+  }
+
+  // Check if document has structure - if not, create it
   const body = doc.getBody();
-  const paragraphs = body.getParagraphs();
+  const sectionIndex = findSectionIndex(body, 'CALL TRANSCRIPTS');
 
-  if (paragraphs.length === 0) {
+  if (sectionIndex === -1) {
     Logger.log('Creating document structure for new doc: ' + config.opportunityName);
     docsAPI.createDocumentStructure(doc, {
       opportunityName: config.opportunityName,
@@ -150,29 +160,45 @@ function processOpportunity(config, sheet, firefliesAPI, gmailAPI, docsAPI, shee
     sinceDate = formatSyncDate(thirtyDaysAgo);
   }
 
-  // Fetch new transcripts since last sync
-  Logger.log('Fetching transcripts for ' + config.customerDomain + ' since ' + sinceDate);
-  const transcripts = firefliesAPI.fetchFirefliesTranscripts(sinceDate, config.customerDomain);
+  // Fetch new transcripts since last sync (using Fireflies channel)
+  Logger.log('Fetching transcripts for channel ' + config.firefliesChannelId + ' since ' + sinceDate);
+  const transcripts = firefliesAPI.fetchFirefliesTranscripts({
+    channel_id: config.firefliesChannelId,
+    sinceDate: new Date(sinceDate)
+  });
 
   Logger.log('Found ' + transcripts.length + ' new transcripts');
 
-  // Fetch new emails since last sync
-  Logger.log('Fetching emails for ' + config.customerDomain + ' with labels: ' + config.gmailLabels);
-  const emailThreads = gmailAPI.fetchGmailThreads(sinceDate, config.customerDomain, config.gmailLabels);
+  // Fetch new emails since last sync (using Gmail labels only)
+  Logger.log('Fetching emails with labels: ' + config.gmailLabels + ' since ' + sinceDate);
+  const emailThreads = gmailAPI.fetchGmailThreads({
+    afterDate: new Date(sinceDate),
+    label: config.gmailLabels
+  });
 
   Logger.log('Found ' + emailThreads.length + ' new email threads');
 
   // Append transcripts to document
-  transcripts.forEach(function(transcript) {
-    Logger.log('Appending transcript: ' + transcript.title);
-    docsAPI.appendTranscript(doc, transcript);
-  });
+  if (transcripts.length > 0) {
+    Logger.log('Appending ' + transcripts.length + ' transcripts to doc...');
+    transcripts.forEach(function(transcript) {
+      Logger.log('  - ' + transcript.title);
+      docsAPI.appendTranscript(doc, transcript);
+    });
+  } else {
+    Logger.log('No transcripts to append');
+  }
 
   // Append email threads to document
-  emailThreads.forEach(function(thread) {
-    Logger.log('Appending email thread: ' + thread.subject);
-    docsAPI.appendEmailThread(doc, thread);
-  });
+  if (emailThreads.length > 0) {
+    Logger.log('Appending ' + emailThreads.length + ' email threads to doc...');
+    emailThreads.forEach(function(thread) {
+      Logger.log('  - ' + thread.subject);
+      docsAPI.appendEmailThread(doc, thread);
+    });
+  } else {
+    Logger.log('No email threads to append');
+  }
 
   // Update last sync date to now
   const now = new Date();

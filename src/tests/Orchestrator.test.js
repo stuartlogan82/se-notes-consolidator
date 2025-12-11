@@ -41,8 +41,8 @@ function testProcessOpportunities() {
               return {
                 getValues: function() {
                   return [
-                    ['Acme Corp', 'https://salesforce.com/123', 'acme.com', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', ''],
-                    ['TechCo', 'https://salesforce.com/456', 'techco.io', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
+                    ['Acme Corp', 'https://salesforce.com/123', 'channel-acme-123', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', ''],
+                    ['TechCo', 'https://salesforce.com/456', 'channel-techco-456', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
                   ];
                 },
                 setValue: function(value) {
@@ -59,11 +59,11 @@ function testProcessOpportunities() {
 
   // Mock API functions
   const mockFirefliesAPI = {
-    fetchFirefliesTranscripts: function(sinceDate, customerDomain) {
-      mockCalls.fetchFirefliesTranscripts.push({ sinceDate: sinceDate, customerDomain: customerDomain });
+    fetchFirefliesTranscripts: function(options) {
+      mockCalls.fetchFirefliesTranscripts.push({ channel_id: options.channel_id, sinceDate: options.sinceDate });
 
-      // Return mock transcripts based on domain
-      if (customerDomain === 'acme.com') {
+      // Return mock transcripts based on channel
+      if (options.channel_id === 'channel-acme-123') {
         return [
           {
             id: 'trans-1',
@@ -80,11 +80,11 @@ function testProcessOpportunities() {
   };
 
   const mockGmailAPI = {
-    fetchGmailThreads: function(afterDate, customerDomain, labels) {
-      mockCalls.fetchGmailThreads.push({ afterDate: afterDate, customerDomain: customerDomain, labels: labels });
+    fetchGmailThreads: function(options) {
+      mockCalls.fetchGmailThreads.push({ afterDate: options.afterDate, label: options.label });
 
-      // Return mock email threads based on domain
-      if (customerDomain === 'acme.com') {
+      // Return mock email threads based on label
+      if (options.label === 'sales') {
         return [
           {
             id: 'thread-1',
@@ -205,8 +205,8 @@ function testProcessOpportunitiesErrorIsolation() {
               return {
                 getValues: function() {
                   return [
-                    ['Bad Opp', 'https://salesforce.com/bad', 'bad.com', 'sales', 'invalid-doc', '2025-01-10 08:00:00', 'Success', ''],
-                    ['Good Opp', 'https://salesforce.com/good', 'good.com', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
+                    ['Bad Opp', 'https://salesforce.com/bad', 'channel-bad-999', 'sales', 'invalid-doc', '2025-01-10 08:00:00', 'Success', ''],
+                    ['Good Opp', 'https://salesforce.com/good', 'channel-good-777', 'trial', 'doc-456', '2025-01-09 08:00:00', 'Success', '']
                   ];
                 },
                 setValue: function(value) {
@@ -221,16 +221,16 @@ function testProcessOpportunitiesErrorIsolation() {
   };
 
   const mockFirefliesAPI = {
-    fetchFirefliesTranscripts: function(sinceDate, customerDomain) {
-      if (customerDomain === 'bad.com') {
-        throw new Error('API Error: Invalid domain');
+    fetchFirefliesTranscripts: function(options) {
+      if (options.channel_id === 'channel-bad-999') {
+        throw new Error('API Error: Invalid channel');
       }
       return [];
     }
   };
 
   const mockGmailAPI = {
-    fetchGmailThreads: function() { return []; }
+    fetchGmailThreads: function(options) { return []; }
   };
 
   const mockDocsAPI = {
@@ -416,7 +416,7 @@ function testProcessOpportunitiesNewDocument() {
               return {
                 getValues: function() {
                   return [
-                    ['New Opp', 'https://salesforce.com/new', 'new.com', 'sales', '', '2025-01-10 08:00:00', 'Success', '']  // Empty doc ID
+                    ['New Opp', 'https://salesforce.com/new', 'channel-new-111', 'sales', '', '2025-01-10 08:00:00', 'Success', '']  // Empty doc ID
                   ];
                 },
                 setValue: function(value) {
@@ -435,7 +435,7 @@ function testProcessOpportunitiesNewDocument() {
   };
 
   const mockGmailAPI = {
-    fetchGmailThreads: function() { return []; }
+    fetchGmailThreads: function(options) { return []; }
   };
 
   const mockDocsAPI = {

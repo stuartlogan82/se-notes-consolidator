@@ -181,8 +181,8 @@ These are pre-configured in `appsscript.json`:
 |--------|------------|-------------|----------|--------|
 | A | Opportunity Name | Name of the sales opportunity | Yes | Text (e.g., "Acme Corp Q4 Deal") |
 | B | Salesforce URL | Link to Salesforce opportunity | Yes | Full URL (e.g., "https://8x8.lightning.force.com/lightning/r/Opportunity/...") |
-| C | Customer Domain | Customer's email domain for filtering | Yes | Domain only (e.g., "acme.com") |
-| D | Gmail Labels | Gmail labels to filter emails | Yes | Comma-separated (e.g., "customer-support,trial") |
+| C | Fireflies Channel ID | Fireflies channel ID for call filtering | Yes | Channel ID from listFirefliesChannels() (e.g., "693b34fc3b2160f53a8bd8ce") |
+| D | Gmail Labels | Gmail labels to filter emails | Yes | Comma-separated (e.g., "customer-support,trial") or single label |
 | E | Doc ID | Google Doc ID for this opportunity | Optional* | Doc ID from URL (leave empty for new docs) |
 | F | Last Sync Date | Last successful sync timestamp | Auto | YYYY-MM-DD HH:MM:SS (auto-updated) |
 | G | Status | Processing status | Auto | "Processing", "Success", or "Error" (auto-updated) |
@@ -190,7 +190,50 @@ These are pre-configured in `appsscript.json`:
 
 **\*Note:** If Doc ID is empty, a new Google Doc will be created automatically on first run.
 
-### Step 2: Get Google Doc IDs
+### Step 2: Set Up Fireflies Channels and Gmail Labels
+
+**Why channels for Fireflies?** For phone calls recorded manually (IT restrictions), Fireflies won't capture customer participants. Instead, organize transcripts by customer using Fireflies channels, then filter by channel ID in the API.
+
+**Why labels for Gmail?** Gmail filtering relies on labels you've applied to customer emails. For partner-led deals where customer email domains vary, labels provide consistent filtering across all relevant correspondence.
+
+**How to set up:**
+
+1. **Create a channel for each customer in Fireflies:**
+   - Go to [Fireflies.ai](https://fireflies.ai)
+   - Click "Channels" in the sidebar
+   - Create a new channel (e.g., "Crosby Housing", "Trafford Council")
+   - Move relevant call transcripts into the appropriate channel
+
+2. **Get Channel IDs using the helper function:**
+   - Open your Google Sheet
+   - Go to Extensions → Apps Script
+   - Select `listFirefliesChannels` from the function dropdown
+   - Click "Run"
+   - Check the execution log (View → Logs)
+   - Copy the channel ID for each customer
+
+**Example log output:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FIREFLIES CHANNELS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Channel: Crosby Housing
+ID: TaEn7ENKqxKwP
+─────────────────────────────────────────
+Channel: Trafford Council
+ID: X9mK3pLqRwYnZ
+─────────────────────────────────────────
+Total channels: 2
+```
+
+3. **Paste the channel ID** into column C (Fireflies Channel ID) for each opportunity
+
+**Set up Gmail labels:**
+1. In Gmail, create a label for each customer/opportunity (e.g., "Crosby", "Trafford")
+2. Apply the label to relevant emails (customer emails, partner emails, internal discussions)
+3. Use the exact label name in column D (Gmail Labels) - case-sensitive!
+
+### Step 3: Get Google Doc IDs
 
 For existing Google Docs, you need to extract the Document ID from the URL:
 
@@ -211,24 +254,25 @@ https://docs.google.com/document/d/1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx/edit
 - Full URL: `https://docs.google.com/document/d/1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx/edit`
 - Doc ID to copy: `1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx`
 
-### Step 3: Add Opportunities
+### Step 4: Add Opportunities
 
 Add one row per opportunity with the following information:
 
 **Example Configuration:**
 
 ```csv
-Opportunity Name,Salesforce URL,Customer Domain,Gmail Labels,Doc ID,Last Sync Date,Status,Error Log
-Acme Corp Q4 Deal,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890ABC/view,acme.com,customer-support,1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx,2025-01-10 08:00:00,Success,
-TechCo Integration Trial,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890DEF/view,techco.io,"trial,integration",2YkLd9wA0BcDeFgHiJkLmNoPqRsTuVwXy,2025-01-09 08:00:00,Success,
-Global Systems POC,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890GHI/view,globalsystems.com,poc,,,,
+Opportunity Name,Salesforce URL,Fireflies Channel ID,Gmail Labels,Doc ID,Last Sync Date,Status,Error Log
+Crosby Housing,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890ABC/view,693b34fc3b2160f53a8bd8ce,Crosby,1XjKc8vZ9AbCdEfGhIjKlMnOpQrStUvWx,,,
+Trafford Council,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890DEF/view,693b3515519d31dde1d2a3de,Trafford,2YkLd9wA0BcDeFgHiJkLmNoPqRsTuVwXy,,,
+Dundee City,https://8x8.lightning.force.com/lightning/r/Opportunity/0061234567890GHI/view,693b350752e0c805f2dcfea8,Dundee,,,
 ```
 
 **Tips:**
-- **Customer Domain:** Use the main email domain (e.g., `acme.com` not `john@acme.com`)
-- **Gmail Labels:** Use exact label names from Gmail (case-sensitive)
+- **Fireflies Channel ID:** Get from `listFirefliesChannels()` function or copy from Fireflies URL - this filters call transcripts
+- **Gmail Labels:** Use exact label names from Gmail (case-sensitive) - works for customer emails AND partner-led deals
 - **Multiple Labels:** Separate with commas, no spaces (e.g., `trial,integration,poc`)
 - **New Docs:** Leave Doc ID empty for new opportunities - system will create doc and update ID
+- **Last Sync Date:** Leave EMPTY for first run - system will fetch last 30 days of data
 - **Salesforce URL:** Use the full Lightning Experience URL from your browser
 
 ### Step 4: Format Gmail Labels

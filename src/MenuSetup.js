@@ -48,6 +48,9 @@ function runConsolidationFromMenu() {
     // Run the main orchestration function
     const result = processOpportunities();
 
+    // Hide the "Working" spinner immediately
+    SpreadsheetApp.getActiveSpreadsheet().toast('', '', 1);
+
     // Show completion notification
     const message = 'Processed ' + result.processed + ' opportunities\n' +
                    'Successful: ' + result.successful + '\n' +
@@ -62,7 +65,18 @@ function runConsolidationFromMenu() {
 
   } catch (error) {
     Logger.log('Error in runConsolidationFromMenu: ' + error.message);
+
+    // Clear the spinner on error too
+    SpreadsheetApp.getActiveSpreadsheet().toast('', '', 1);
+
     ui.alert('Error', 'An error occurred: ' + error.message, ui.ButtonSet.OK);
+  } finally {
+    // Always clear the spinner, even if something unexpected happens
+    try {
+      SpreadsheetApp.getActiveSpreadsheet().toast('', '', 1);
+    } catch (e) {
+      // Ignore - just making sure spinner is gone
+    }
   }
 }
 

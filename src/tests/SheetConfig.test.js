@@ -16,13 +16,13 @@ function testGetOpportunityConfigs() {
         getValues: function() {
           if (row === 1 && numRows === 1) {
             // Header row
-            return [['Opportunity Name', 'Salesforce URL', 'Customer Domain', 'Gmail Labels', 'Doc ID', 'Last Sync Date', 'Status', 'Error Log']];
+            return [['Opportunity Name', 'Salesforce URL', 'Fireflies Channel ID', 'Gmail Labels', 'Doc ID', 'Last Sync Date', 'Status', 'Error Log']];
           } else {
             // Data rows (rows 2-4)
             return [
-              ['Acme Corp Q4 Deal', 'https://8x8.lightning.force.com/opp/123', 'acme.com', 'customer-support', '1XjKc8vZ', '2025-01-10 08:00:00', 'Success', ''],
-              ['TechCo Trial', 'https://8x8.lightning.force.com/opp/456', 'techco.io', 'trial,integration', '2YkLd9wA', '2025-01-09 08:00:00', 'Success', ''],
-              ['Global Systems', 'https://8x8.lightning.force.com/opp/789', 'globalsystems.com', 'poc', '3ZlMe0xB', '', '', '']
+              ['Acme Corp Q4 Deal', 'https://8x8.lightning.force.com/opp/123', 'channel-acme', 'customer-support', '1XjKc8vZ', '2025-01-10 08:00:00', 'Success', ''],
+              ['TechCo Trial', 'https://8x8.lightning.force.com/opp/456', 'channel-techco', 'trial,integration', '2YkLd9wA', '2025-01-09 08:00:00', 'Success', ''],
+              ['Global Systems', 'https://8x8.lightning.force.com/opp/789', 'channel-global', 'poc', '3ZlMe0xB', '', '', '']
             ];
           }
         }
@@ -37,7 +37,7 @@ function testGetOpportunityConfigs() {
     assertEqual(configs.length, 3);
     assertEqual(configs[0].opportunityName, 'Acme Corp Q4 Deal');
     assertEqual(configs[0].salesforceUrl, 'https://8x8.lightning.force.com/opp/123');
-    assertEqual(configs[0].customerDomain, 'acme.com');
+    assertEqual(configs[0].firefliesChannelId, 'channel-acme');
     assertEqual(configs[0].gmailLabels, 'customer-support');
     assertEqual(configs[0].docId, '1XjKc8vZ');
     assertEqual(configs[0].lastSyncDate, '2025-01-10 08:00:00');
