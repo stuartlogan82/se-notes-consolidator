@@ -22,8 +22,14 @@ function runAllTests() {
     testFail
   ]));
 
+  // Run Fireflies API tests
+  Logger.log('\n--- Testing Fireflies API ---');
+  allResults.push(...runTestSuite('FirefliesAPI', [
+    testParseFirefliesResponse,
+    testBuildFirefliesGraphQLQuery
+  ]));
+
   // Future test suites will be added here as we build them:
-  // allResults.push(...runTestSuite('FirefliesAPI', [testFirefliesAPI]));
   // allResults.push(...runTestSuite('GmailAPI', [testGmailAPI]));
   // allResults.push(...runTestSuite('ConfigManager', [testConfigManager]));
 

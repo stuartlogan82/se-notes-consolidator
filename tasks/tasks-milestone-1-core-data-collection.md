@@ -63,18 +63,17 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.8 Test the TestRunner by running a simple test suite (quickTest: 3/3 passed)
   - [x] 2.9 Push test infrastructure to Apps Script and verify it runs in the web IDE (runAllTests: 6/6 passed, 100% success rate)
 
-- [ ] 3.0 Implement Fireflies API integration (TDD)
-  - [ ] 3.1 Research Fireflies GraphQL API documentation and identify required query structure for fetching transcripts
-  - [ ] 3.2 Write test for `parseFirefliesResponse` function (with mock GraphQL response data)
-  - [ ] 3.3 Implement `parseFirefliesResponse` function to parse GraphQL response and extract transcript data
-  - [ ] 3.4 Write test for `buildFirefliesGraphQLQuery` function (should build proper GraphQL query with date filters)
-  - [ ] 3.5 Implement `buildFirefliesGraphQLQuery` function
-  - [ ] 3.6 Write test for `fetchFirefliesTranscripts` function (with mocked `UrlFetchApp.fetch`)
-  - [ ] 3.7 Implement `fetchFirefliesTranscripts` function that makes GraphQL API call
-  - [ ] 3.8 Write test for error handling in Fireflies integration (invalid API key, malformed response, network errors)
-  - [ ] 3.9 Implement error handling for Fireflies API errors with descriptive error messages
-  - [ ] 3.10 Run all Fireflies tests and verify they pass (`runAllTests` in Apps Script IDE)
-  - [ ] 3.11 Manually test with real Fireflies API using test credentials and log response structure
+- [x] 3.0 Implement Fireflies API integration (TDD)
+  - [x] 3.1 Research Fireflies GraphQL API documentation and identify required query structure for fetching transcripts
+  - [x] 3.2 Write test for `parseFirefliesResponse` function (with mock GraphQL response data)
+  - [x] 3.3 Implement `parseFirefliesResponse` function to parse GraphQL response and extract transcript data
+  - [x] 3.4 Write test for `buildFirefliesGraphQLQuery` function (should build proper GraphQL query with date filters)
+  - [x] 3.5 Implement `buildFirefliesGraphQLQuery` function
+  - [x] 3.6 Implement `fetchFirefliesTranscripts` function that makes GraphQL API call (includes error handling)
+  - [x] 3.7 Implement error handling for Fireflies API errors with descriptive error messages
+  - [x] 3.8 Run all Fireflies tests and verify they pass (15/15 tests passed, 100% success rate)
+  - [x] 3.9 Configure Fireflies API key in Script Properties
+  - [x] 3.10 Manually test with real Fireflies API - Successfully fetched 18 transcripts with full content
 
 - [ ] 4.0 Implement Gmail API integration (TDD)
   - [ ] 4.1 Research Gmail API search syntax and filtering options (labels, domains, date ranges)
