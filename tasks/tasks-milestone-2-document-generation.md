@@ -140,13 +140,13 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 7.12 Test with empty results (no new transcripts/emails), verify graceful handling
   - [ ] 7.13 Document test results, screenshots, and any edge cases discovered
 
-- [ ] 8.0 Update documentation for Milestone 2
-  - [ ] 8.1 Update README with "Setting Up the Opportunity Tracker" section
-  - [ ] 8.2 Document spreadsheet column definitions and expected formats
-  - [ ] 8.3 Document how to get Google Doc IDs from URLs
-  - [ ] 8.4 Document custom menu usage ("Run Consolidation" workflow)
-  - [ ] 8.5 Add examples of formatted document output (screenshots or text samples)
-  - [ ] 8.6 Document error logging system and how to troubleshoot failures
-  - [ ] 8.7 Update "Known Limitations" with Docs API quotas and deduplication caveats
-  - [ ] 8.8 Add "End-to-End Setup Walkthrough" section with step-by-step instructions
-  - [ ] 8.9 Update project status in README to reflect Milestone 2 completion
+- [x] 8.0 Update documentation for Milestone 2
+  - [x] 8.1 Update README with "Setting Up the Opportunity Tracker" section
+  - [x] 8.2 Document spreadsheet column definitions and expected formats
+  - [x] 8.3 Document how to get Google Doc IDs from URLs
+  - [x] 8.4 Document custom menu usage ("Run Consolidation" workflow)
+  - [x] 8.5 Add examples of formatted document output (text samples)
+  - [x] 8.6 Document error logging system and how to troubleshoot failures
+  - [x] 8.7 Update "Known Limitations" with Docs API quotas and deduplication caveats
+  - [x] 8.8 Add "End-to-End Setup Walkthrough" section with step-by-step instructions
+  - [x] 8.9 Update project status in README to reflect Milestone 2 completion
