@@ -109,3 +109,118 @@ function validateFirefliesSetup() {
 
   return true;
 }
+
+/**
+ * Test fetching threads from Gmail
+ * This makes a real Gmail API call
+ */
+function testGmailIntegration() {
+  Logger.log('=== Testing Gmail Integration ===');
+
+  try {
+    // Fetch recent emails from the last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    Logger.log(`Fetching Gmail threads since ${sevenDaysAgo.toDateString()}...`);
+
+    const options = {
+      afterDate: sevenDaysAgo
+    };
+
+    const threads = fetchGmailThreads(options);
+
+    Logger.log(`✓ Successfully fetched ${threads.length} threads`);
+
+    if (threads.length > 0) {
+      Logger.log('\nFirst thread details:');
+      const first = threads[0];
+      Logger.log(`  Subject: ${first.subject}`);
+      Logger.log(`  Message Count: ${first.messageCount}`);
+      Logger.log(`  First Message From: ${first.messages[0].from}`);
+      Logger.log(`  First Message Date: ${first.messages[0].dateFormatted}`);
+
+      if (first.formattedThread) {
+        const preview = first.formattedThread.substring(0, 200);
+        Logger.log(`  Thread preview: ${preview}...`);
+      }
+    } else {
+      Logger.log('⚠ No threads found in the last 7 days');
+    }
+
+    Logger.log('\n✓ Gmail integration test passed');
+    return true;
+
+  } catch (error) {
+    Logger.log(`✗ Gmail integration test failed: ${error.message}`);
+    Logger.log(`Error stack: ${error.stack}`);
+    return false;
+  }
+}
+
+/**
+ * Test Gmail with label filter
+ */
+function testGmailWithLabel() {
+  Logger.log('=== Testing Gmail with Label Filter ===');
+
+  try {
+    // Change this to a label you actually use
+    const labelName = 'INBOX'; // Use INBOX for testing
+
+    Logger.log(`Fetching threads with label: ${labelName}...`);
+
+    const options = {
+      label: labelName
+    };
+
+    const threads = fetchGmailThreads(options);
+
+    Logger.log(`✓ Successfully fetched ${threads.length} threads with label ${labelName}`);
+
+    threads.slice(0, 5).forEach((thread, index) => {
+      Logger.log(`\n${index + 1}. ${thread.subject}`);
+      Logger.log(`   Messages: ${thread.messageCount}`);
+      Logger.log(`   From: ${thread.messages[0].from}`);
+    });
+
+    return true;
+
+  } catch (error) {
+    Logger.log(`✗ Label filter test failed: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Test Gmail with domain filter
+ */
+function testGmailWithDomain() {
+  Logger.log('=== Testing Gmail with Domain Filter ===');
+
+  try {
+    // Change this to a domain you receive emails from
+    const domain = '8x8.com'; // Change to test with your domain
+
+    Logger.log(`Fetching threads from domain: ${domain}...`);
+
+    const options = {
+      fromDomain: domain
+    };
+
+    const threads = fetchGmailThreads(options);
+
+    Logger.log(`✓ Successfully fetched ${threads.length} threads from @${domain}`);
+
+    threads.slice(0, 3).forEach((thread, index) => {
+      Logger.log(`\n${index + 1}. ${thread.subject}`);
+      Logger.log(`   From: ${thread.messages[0].from}`);
+    });
+
+    return true;
+
+  } catch (error) {
+    Logger.log(`✗ Domain filter test failed: ${error.message}`);
+    return false;
+  }
+}

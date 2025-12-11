@@ -150,33 +150,10 @@ function testParseFirefliesResponse() {
 function testBuildFirefliesGraphQLQuery() {
   const tests = [];
 
-  // Test 1: Build query with date filter
-  try {
-    const date = new Date('2025-01-15').getTime();
-    const query = buildFirefliesGraphQLQuery({ date: date });
+  // Note: We removed date/email filters from GraphQL query due to API limitations
+  // Filtering is now done in-memory after fetching
 
-    assertContains(query, 'query');
-    assertContains(query, 'transcripts');
-    assertContains(query, String(date));
-
-    tests.push({ name: 'buildFirefliesGraphQLQuery includes date filter', passed: true });
-  } catch (e) {
-    tests.push({ name: 'buildFirefliesGraphQLQuery includes date filter', passed: false, error: e.message });
-  }
-
-  // Test 2: Build query with participant email filter
-  try {
-    const query = buildFirefliesGraphQLQuery({ participantEmail: 'john@customer.com' });
-
-    assertContains(query, 'transcripts');
-    assertContains(query, 'john@customer.com');
-
-    tests.push({ name: 'buildFirefliesGraphQLQuery includes participant email', passed: true });
-  } catch (e) {
-    tests.push({ name: 'buildFirefliesGraphQLQuery includes participant email', passed: false, error: e.message });
-  }
-
-  // Test 3: Build query with limit
+  // Test 1: Build query with limit
   try {
     const query = buildFirefliesGraphQLQuery({ limit: 25 });
 

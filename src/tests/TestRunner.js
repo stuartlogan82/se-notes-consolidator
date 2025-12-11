@@ -29,8 +29,15 @@ function runAllTests() {
     testBuildFirefliesGraphQLQuery
   ]));
 
+  // Run Gmail API tests
+  Logger.log('\n--- Testing Gmail API ---');
+  allResults.push(...runTestSuite('GmailAPI', [
+    testBuildGmailSearchQuery,
+    testParseGmailThreads,
+    testFormatGmailDate
+  ]));
+
   // Future test suites will be added here as we build them:
-  // allResults.push(...runTestSuite('GmailAPI', [testGmailAPI]));
   // allResults.push(...runTestSuite('ConfigManager', [testConfigManager]));
 
   // Print summary
