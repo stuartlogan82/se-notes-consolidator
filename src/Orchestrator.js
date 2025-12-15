@@ -161,22 +161,36 @@ function processOpportunity(config, sheet, firefliesAPI, gmailAPI, docsAPI, shee
   }
 
   // Fetch new transcripts since last sync (using Fireflies channel)
-  Logger.log('Fetching transcripts for channel ' + config.firefliesChannelId + ' since ' + sinceDate);
-  const transcripts = firefliesAPI.fetchFirefliesTranscripts({
-    channel_id: config.firefliesChannelId,
-    sinceDate: new Date(sinceDate)
-  });
-
-  Logger.log('Found ' + transcripts.length + ' new transcripts');
+  // Wrap in try-catch for error isolation - Gmail should still be fetched if this fails
+  let transcripts = [];
+  try {
+    Logger.log('Fetching transcripts for channel ' + config.firefliesChannelId + ' since ' + sinceDate);
+    transcripts = firefliesAPI.fetchFirefliesTranscripts({
+      channel_id: config.firefliesChannelId,
+      sinceDate: new Date(sinceDate)
+    });
+    Logger.log('Found ' + transcripts.length + ' new transcripts');
+  } catch (error) {
+    Logger.log('⚠ Error fetching Fireflies transcripts: ' + error.message);
+    Logger.log('Continuing to fetch emails...');
+    // Don't throw - continue to fetch emails
+  }
 
   // Fetch new emails since last sync (using Gmail labels only)
-  Logger.log('Fetching emails with labels: ' + config.gmailLabels + ' since ' + sinceDate);
-  const emailThreads = gmailAPI.fetchGmailThreads({
-    afterDate: new Date(sinceDate),
-    label: config.gmailLabels
-  });
-
-  Logger.log('Found ' + emailThreads.length + ' new email threads');
+  // Wrap in try-catch for error isolation - Fireflies failure shouldn't prevent email fetching
+  let emailThreads = [];
+  try {
+    Logger.log('Fetching emails with labels: ' + config.gmailLabels + ' since ' + sinceDate);
+    emailThreads = gmailAPI.fetchGmailThreads({
+      afterDate: new Date(sinceDate),
+      label: config.gmailLabels
+    });
+    Logger.log('Found ' + emailThreads.length + ' new email threads');
+  } catch (error) {
+    Logger.log('⚠ Error fetching Gmail threads: ' + error.message);
+    Logger.log('Continuing to process available content...');
+    // Don't throw - continue with whatever content we have
+  }
 
   // Append transcripts to document
   if (transcripts.length > 0) {
