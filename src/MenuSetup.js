@@ -13,6 +13,11 @@ function onOpen() {
   ui.createMenu('Customer Consolidation')
     .addItem('Run Consolidation', 'runConsolidationFromMenu')
     .addSeparator()
+    .addSubMenu(ui.createMenu('Automation')
+      .addItem('Set Up Daily Trigger', 'setupTriggerFromMenu')
+      .addItem('Remove Daily Trigger', 'removeTriggerFromMenu')
+      .addItem('View Active Triggers', 'viewTriggersFromMenu'))
+    .addSeparator()
     .addItem('View Setup Guide', 'showSetupGuide')
     .addItem('View Last Run Summary', 'showLastRunSummary')
     .addToUi();
