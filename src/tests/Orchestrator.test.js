@@ -154,8 +154,8 @@ function testProcessOpportunities() {
 
     // Should fetch transcripts for both opportunities
     assertEqual(mockCalls.fetchFirefliesTranscripts.length, 2);
-    assertContains(mockCalls.fetchFirefliesTranscripts[0].customerDomain, 'acme.com');
-    assertContains(mockCalls.fetchFirefliesTranscripts[1].customerDomain, 'techco.io');
+    assertEqual(mockCalls.fetchFirefliesTranscripts[0].channel_id, 'channel-acme-123');
+    assertEqual(mockCalls.fetchFirefliesTranscripts[1].channel_id, 'channel-techco-456');
 
     // Should fetch emails for both opportunities
     assertEqual(mockCalls.fetchGmailThreads.length, 2);
@@ -289,6 +289,276 @@ function testProcessOpportunitiesErrorIsolation() {
     tests.push({ name: 'processOpportunities isolates errors per opportunity', passed: true });
   } catch (e) {
     tests.push({ name: 'processOpportunities isolates errors per opportunity', passed: false, error: e.message });
+  }
+
+  return tests;
+}
+
+/**
+ * Test error isolation within a single opportunity
+ * When Fireflies API fails, Gmail should still be fetched
+ */
+function testProcessOpportunityAPIErrorIsolation() {
+  const tests = [];
+
+  const mockCalls = {
+    fetchFireflies: 0,
+    fetchGmail: 0,
+    appendEmailThread: 0,
+    updateLastSyncDate: 0,
+    updateOpportunityStatus: []
+  };
+
+  const mockSpreadsheetApp = {
+    getActiveSpreadsheet: function() {
+      return {
+        getSheetByName: function(name) {
+          return {
+            getName: function() { return name; },
+            getLastRow: function() { return 2; },
+            getRange: function(row, col, numRows, numCols) {
+              return {
+                getValues: function() {
+                  return [
+                    ['Acme Corp', 'https://salesforce.com/123', 'channel-acme-123', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', '']
+                  ];
+                },
+                setValue: function(value) {
+                  this.value = value;
+                }
+              };
+            }
+          };
+        }
+      };
+    }
+  };
+
+  // Fireflies API throws error, but Gmail should still work
+  const mockFirefliesAPI = {
+    fetchFirefliesTranscripts: function(options) {
+      mockCalls.fetchFireflies++;
+      throw new Error('Fireflies API rate limit exceeded');
+    }
+  };
+
+  const mockGmailAPI = {
+    fetchGmailThreads: function(options) {
+      mockCalls.fetchGmail++;
+      // Gmail returns valid data
+      return [
+        {
+          id: 'thread-1',
+          subject: 'Integration Questions',
+          messageCount: 2,
+          messages: [
+            {
+              from: 'john@acme.com',
+              subject: 'Integration Questions',
+              dateFormatted: '2025-01-11 10:00:00',
+              body: 'Can you help us integrate?'
+            }
+          ]
+        }
+      ];
+    }
+  };
+
+  const mockDocsAPI = {
+    getOrCreateDocument: function(docId) {
+      return {
+        getId: function() { return docId; },
+        getBody: function() {
+          return {
+            getParagraphs: function() {
+              // Return a paragraph that contains "CALL TRANSCRIPTS" to simulate existing structure
+              return [{
+                getText: function() { return '📞 CALL TRANSCRIPTS'; }
+              }];
+            }
+          };
+        }
+      };
+    },
+    createDocumentStructure: function() {},
+    appendTranscript: function() {},
+    appendEmailThread: function(doc, thread) {
+      mockCalls.appendEmailThread++;
+    }
+  };
+
+  const mockSheetConfig = {
+    updateLastSyncDate: function(sheet, config, date) {
+      mockCalls.updateLastSyncDate++;
+    },
+    updateOpportunityStatus: function(sheet, config, status) {
+      mockCalls.updateOpportunityStatus.push(status);
+    },
+    updateDocId: function() {}
+  };
+
+  // Test: Fireflies fails but Gmail should still be fetched and appended
+  try {
+    const result = processOpportunitiesHelper(
+      mockSpreadsheetApp,
+      mockFirefliesAPI,
+      mockGmailAPI,
+      mockDocsAPI,
+      mockSheetConfig
+    );
+
+    // Fireflies API should have been called and failed
+    assertEqual(mockCalls.fetchFireflies, 1, 'Fireflies API should have been called');
+
+    // Gmail API should still have been called despite Fireflies failure
+    assertEqual(mockCalls.fetchGmail, 1, 'Gmail API should have been called despite Fireflies failure');
+
+    // Email should have been appended
+    assertEqual(mockCalls.appendEmailThread, 1, 'Email thread should have been appended');
+
+    // Should still update last sync date and status to success
+    assertEqual(mockCalls.updateLastSyncDate, 1, 'Should update last sync date');
+    assertTrue(mockCalls.updateOpportunityStatus.includes('Success'), 'Should mark opportunity as Success');
+
+    // Overall result should show success despite partial failure
+    assertEqual(result.successful, 1, 'Should mark opportunity as successful');
+    assertEqual(result.failed, 0, 'Should not mark opportunity as failed');
+
+    tests.push({ name: 'processOpportunity continues to fetch Gmail when Fireflies fails', passed: true });
+  } catch (e) {
+    tests.push({ name: 'processOpportunity continues to fetch Gmail when Fireflies fails', passed: false, error: e.message });
+  }
+
+  return tests;
+}
+
+/**
+ * Test error isolation within a single opportunity (reverse scenario)
+ * When Gmail API fails, Fireflies should still be fetched
+ */
+function testProcessOpportunityGmailErrorIsolation() {
+  const tests = [];
+
+  const mockCalls = {
+    fetchFireflies: 0,
+    fetchGmail: 0,
+    appendTranscript: 0,
+    updateLastSyncDate: 0,
+    updateOpportunityStatus: []
+  };
+
+  const mockSpreadsheetApp = {
+    getActiveSpreadsheet: function() {
+      return {
+        getSheetByName: function(name) {
+          return {
+            getName: function() { return name; },
+            getLastRow: function() { return 2; },
+            getRange: function(row, col, numRows, numCols) {
+              return {
+                getValues: function() {
+                  return [
+                    ['Acme Corp', 'https://salesforce.com/123', 'channel-acme-123', 'sales', 'doc-123', '2025-01-10 08:00:00', 'Success', '']
+                  ];
+                },
+                setValue: function(value) {
+                  this.value = value;
+                }
+              };
+            }
+          };
+        }
+      };
+    }
+  };
+
+  // Fireflies API works
+  const mockFirefliesAPI = {
+    fetchFirefliesTranscripts: function(options) {
+      mockCalls.fetchFireflies++;
+      return [
+        {
+          id: 'trans-1',
+          title: 'Acme Discovery Call',
+          date: '2025-01-12',
+          durationMinutes: 30,
+          participants: ['john@acme.com'],
+          formattedTranscript: 'John: We need help with integration.'
+        }
+      ];
+    }
+  };
+
+  // Gmail API throws error
+  const mockGmailAPI = {
+    fetchGmailThreads: function(options) {
+      mockCalls.fetchGmail++;
+      throw new Error('Gmail API quota exceeded');
+    }
+  };
+
+  const mockDocsAPI = {
+    getOrCreateDocument: function(docId) {
+      return {
+        getId: function() { return docId; },
+        getBody: function() {
+          return {
+            getParagraphs: function() {
+              return [{
+                getText: function() { return '📞 CALL TRANSCRIPTS'; }
+              }];
+            }
+          };
+        }
+      };
+    },
+    createDocumentStructure: function() {},
+    appendTranscript: function(doc, transcript) {
+      mockCalls.appendTranscript++;
+    },
+    appendEmailThread: function() {}
+  };
+
+  const mockSheetConfig = {
+    updateLastSyncDate: function(sheet, config, date) {
+      mockCalls.updateLastSyncDate++;
+    },
+    updateOpportunityStatus: function(sheet, config, status) {
+      mockCalls.updateOpportunityStatus.push(status);
+    },
+    updateDocId: function() {}
+  };
+
+  // Test: Gmail fails but Fireflies should still be fetched and appended
+  try {
+    const result = processOpportunitiesHelper(
+      mockSpreadsheetApp,
+      mockFirefliesAPI,
+      mockGmailAPI,
+      mockDocsAPI,
+      mockSheetConfig
+    );
+
+    // Fireflies API should have been called successfully
+    assertEqual(mockCalls.fetchFireflies, 1, 'Fireflies API should have been called');
+
+    // Gmail API should have been called and failed
+    assertEqual(mockCalls.fetchGmail, 1, 'Gmail API should have been called');
+
+    // Transcript should have been appended despite Gmail failure
+    assertEqual(mockCalls.appendTranscript, 1, 'Transcript should have been appended');
+
+    // Should still update last sync date and status to success
+    assertEqual(mockCalls.updateLastSyncDate, 1, 'Should update last sync date');
+    assertTrue(mockCalls.updateOpportunityStatus.includes('Success'), 'Should mark opportunity as Success');
+
+    // Overall result should show success despite partial failure
+    assertEqual(result.successful, 1, 'Should mark opportunity as successful');
+    assertEqual(result.failed, 0, 'Should not mark opportunity as failed');
+
+    tests.push({ name: 'processOpportunity continues to fetch Fireflies when Gmail fails', passed: true });
+  } catch (e) {
+    tests.push({ name: 'processOpportunity continues to fetch Fireflies when Gmail fails', passed: false, error: e.message });
   }
 
   return tests;
@@ -459,7 +729,8 @@ function testProcessOpportunitiesNewDocument() {
 
   const mockSheetConfig = {
     updateLastSyncDate: function() {},
-    updateOpportunityStatus: function() {}
+    updateOpportunityStatus: function() {},
+    updateDocId: function() {}
   };
 
   // Test: New document should have structure created

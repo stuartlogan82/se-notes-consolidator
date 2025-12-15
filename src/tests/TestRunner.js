@@ -77,6 +77,8 @@ function runAllTests() {
   allResults.push(...runTestSuite('Orchestrator', [
     testProcessOpportunities,
     testProcessOpportunitiesErrorIsolation,
+    testProcessOpportunityAPIErrorIsolation,
+    testProcessOpportunityGmailErrorIsolation,
     testProcessOpportunitiesEmptyResults,
     testProcessOpportunitiesNewDocument
   ]));
