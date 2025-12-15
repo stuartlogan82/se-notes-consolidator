@@ -154,8 +154,8 @@ function testProcessOpportunities() {
 
     // Should fetch transcripts for both opportunities
     assertEqual(mockCalls.fetchFirefliesTranscripts.length, 2);
-    assertContains(mockCalls.fetchFirefliesTranscripts[0].customerDomain, 'acme.com');
-    assertContains(mockCalls.fetchFirefliesTranscripts[1].customerDomain, 'techco.io');
+    assertEqual(mockCalls.fetchFirefliesTranscripts[0].channel_id, 'channel-acme-123');
+    assertEqual(mockCalls.fetchFirefliesTranscripts[1].channel_id, 'channel-techco-456');
 
     // Should fetch emails for both opportunities
     assertEqual(mockCalls.fetchGmailThreads.length, 2);
@@ -729,7 +729,8 @@ function testProcessOpportunitiesNewDocument() {
 
   const mockSheetConfig = {
     updateLastSyncDate: function() {},
-    updateOpportunityStatus: function() {}
+    updateOpportunityStatus: function() {},
+    updateDocId: function() {}
   };
 
   // Test: New document should have structure created
